@@ -4,6 +4,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Auth from '@/pages/auth';
 import Chat from './pages/chat';
 import Profile from './pages/profile';
+import { useAppStore } from '@/store';
+
+const PrivateRoute = ({children}) => {
+  const {userInfo} = useAppStore();
+  const isAuthenticated = !!userInfo;
+  return isAuthenticated ? children : <Navigate ro="/auth" />;
+};
 
 function App() {
   return (
