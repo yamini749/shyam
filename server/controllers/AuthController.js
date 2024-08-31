@@ -17,7 +17,7 @@ export const signup = async (request, response, next) => {
       return response.status(400).send("Email and Password are Required.");
     }
     const user = await User.create({ email, password });
-    response.cookie("jwt", createToken(email, User.id), {
+    response.cookie("jwt", createToken(email, user.id), {
       maxAge,
       secure: true,
       sameSite: "None",
@@ -52,7 +52,8 @@ export const login = async (request, response, next) => {
     if (!auth) {
       return response.status(400).send("Password is incorrect.");
     }
-    response.cookie("jwt", createToken(email, User.id), {
+
+    response.cookie("jwt", createToken(email, user.id), {
       maxAge,
       secure: true,
       sameSite: "None",
@@ -65,6 +66,7 @@ export const login = async (request, response, next) => {
         lastName: user.lastName,
         image: user.image,
         profileSetup: user.profileSetup,
+        color: user.color,
       },
     });
   } catch (error) {
