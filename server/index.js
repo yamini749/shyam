@@ -22,7 +22,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/auth", require("./routes/AuthRoutes"));
+app.use("/api/auth", authRoutes);
 
 const server = app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
