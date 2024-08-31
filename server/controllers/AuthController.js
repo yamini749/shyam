@@ -1,10 +1,12 @@
-import User from "../models/UserModel";
-import { sign } from "jsonwebtoken";
+import User from "../models/UserModel.js";
+import jwt from "jsonwebtoken";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 const createToken = (email, userId) => {
-  return sign({ email, userId }, process.env.JWT_KEY, { expiresIn: maxAge });
+  return jwt.sign({ email, userId }, process.env.JWT_KEY, {
+    expiresIn: maxAge,
+  });
 };
 
 export const signup = async (request, response, next) => {
@@ -31,6 +33,6 @@ export const signup = async (request, response, next) => {
     });
   } catch (error) {
     console.log({ error });
-    return response.status(500).send("Internal Serverr Error");
+    return response.status(500).send("Internal Server Error");
   }
 };
