@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
+import apiClient from "@/lib/api-client";
+import { SIGNUP_ROUTE } from "@/utils/constants"
+
 const Auth = () => {
 
     const [email, setEmail] = useState("")
@@ -18,9 +21,11 @@ const Auth = () => {
         }
         if (!password.length){
             toast.error("Password is required.");
+            return false;
         }
         if (password !== confirmPassword) {
             toast.error("Password and confirm password should be the same.");
+            return false;
         }
         return true;
     }
@@ -31,7 +36,8 @@ const Auth = () => {
 
     const handleSignup = async () => {
         if (validateSignup()){
-            alert("done");
+            const response = await apiClient.post(SIGNUP_ROUTE, { email, password });
+            console.log({ response });
         }
     };
 
