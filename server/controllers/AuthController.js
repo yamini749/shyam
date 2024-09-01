@@ -77,18 +77,21 @@ export const login = async (request, response, next) => {
 
 export const getUserInfo = async (request, response, next) => {
   try {
-    
-    // return response.status(201).json({
-    //   user: {
-    //     id: user.id,
-    //     email: user.email,
-    //     firstName: user.firstName,
-    //     lastName: user.lastName,
-    //     image: user.image,
-    //     profileSetup: user.profileSetup,
-    //     color: user.color,
-    //   },
-    // });
+    const userData = await User.findById(request.userId);
+    if (!userData) {
+      return response.status(404).send("User not found.");
+    }
+    return response.status(201).json({
+      user: {
+        id: userData.id,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        image: userData.image,
+        profileSetup: userData.profileSetup,
+        color: userData.color,
+      },
+    });
   } catch (error) {
     console.log({ error });
     return response.status(500).send("Internal Server Error");
