@@ -82,13 +82,49 @@ export const getUserInfo = async (request, response, next) => {
       return response.status(404).send("User not found.");
     }
     return response.status(200).json({
-        id: userData.id,
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        image: userData.image,
-        profileSetup: userData.profileSetup,
-        color: userData.color,
+      id: userData.id,
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      image: userData.image,
+      profileSetup: userData.profileSetup,
+      color: userData.color,
+    });
+  } catch (error) {
+    console.log({ error });
+    return response.status(500).send("Internal Server Error");
+  }
+};
+
+export const updateProfile = async (request, response, next) => {
+  try {
+    const { userId } = request;
+    const { firstName, lastName, color } = request.body;
+    if (!firstName || !lastName) {
+      return response
+        .status(400)
+        .send("First Name, Last Name and Color are Required.");
+    }
+
+    const userData = await User.findByIdAndUpdate(
+      userId,
+      {
+        firstName,
+        lastName,
+        color,
+        profileSetup: true,
+      },
+      { new: true, runValidators: true }
+    );
+
+    return response.status(200).json({
+      id: userData.id,
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      image: userData.image,
+      profileSetup: userData.profileSetup,
+      color: userData.color,
     });
   } catch (error) {
     console.log({ error });
