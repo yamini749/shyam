@@ -8,7 +8,7 @@ import { FaPlus, FaTrash } from "react-icons/fa"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { UPDATE_PROFILE_ROUTE } from "@/utils/constants";
+import { ADD_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from "@/utils/constants";
 import apiClient from "@/lib/api-client";
 
 const Profile = () => {
@@ -72,7 +72,19 @@ const Profile = () => {
     fileInputRef.current.click();
   };
 
-  const handleImageChange = async (event) => {}
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    console.log({ file });
+    if (file) {
+      const formData = new FormData();
+      formData.append("profile-image", file);
+      const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, { withCredentials: true });
+      if (response.status === 200 && response.data.image) {
+        setUserInfo({ ...userInfo, image: response.data.image });
+        toast.success("Profile image uploaded successfully.");
+      }
+    }
+  };
 
   const handleDeleteImage = async () => {}
 
@@ -116,7 +128,7 @@ const Profile = () => {
                 )}
               </div>
             )}
-            <input type="text" ref={fileInputRef} className="hidden" onChange />
+            <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageChange} name="profile-image" accept=".png, .jpg, .jpeg, .webp" />
           </div>
           <div className="flex min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center">
             <div className="w-full">
