@@ -12,10 +12,7 @@ import { useNavigate } from "react-router-dom"
 import { useAppStore } from "@/store"
 
 const Auth = () => {
-
-
-
-
+    
     const navigate = useNavigate();
     const { setUserInfo } = useAppStore();
     const [email, setEmail] = useState("");
