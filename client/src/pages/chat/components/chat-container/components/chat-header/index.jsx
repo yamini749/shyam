@@ -14,7 +14,7 @@ function ChatHeader() {
         </div>
 
     </div>
-  )
-}
+  );
+};
 
 export default ChatHeader
