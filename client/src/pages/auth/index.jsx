@@ -18,6 +18,8 @@ const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    
     const validateSignup = () => {
         if (!email.length) {
             toast.error("Email is required.");
